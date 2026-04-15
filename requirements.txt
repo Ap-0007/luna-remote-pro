@@ -1,0 +1,8 @@
+flask
+flask-socketio
+eventlet
+pynput
+qrcode
+pillow
+python-engineio
+python-socketio

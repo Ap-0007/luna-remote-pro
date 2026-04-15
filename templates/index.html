@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>LunaRemote Pro AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">LUNA<span>PRO</span></div>
+            <div class="status" id="connection-status">Connecting...</div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs-nav">
+            <button class="tab-link active" data-tab="trackpad-view">Trackpad</button>
+            <button class="tab-link" data-tab="apps-view">Launch</button>
+            <button class="tab-link" data-tab="ai-view">AI Hub</button>
+            <button class="tab-link" data-tab="controls-view">Config</button>
+        </nav>
+
+        <main>
+            <!-- Trackpad Tab -->
+            <section id="trackpad-view" class="tab-content active">
+                <div id="trackpad" class="glass-panel">
+                    <div class="trackpad-label">PRO PRECISION</div>
+                    <div class="trackpad-hint">2-Finger Scroll • Double Tap Click</div>
+                </div>
+                
+                <div class="pro-toolbar">
+                    <button class="pro-btn" id="pro-drag">Drag Mode</button>
+                    <button class="pro-btn" id="pro-rclick">Right Click</button>
+                    <div class="kb-compact">
+                        <input type="text" id="kb-input" placeholder="Type..." autocomplete="off">
+                        <button id="kb-backspace">⌫</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Launchpad Tab -->
+            <section id="apps-view" class="tab-content">
+                <div class="launchpad-grid">
+                    <div class="app-card" data-app="Google Chrome">🌐<span>Chrome</span></div>
+                    <div class="app-card" data-app="Spotify">🎵<span>Spotify</span></div>
+                    <div class="app-card" data-app="Terminal">📂<span>Terminal</span></div>
+                    <div class="app-card" data-app="Finder">🖥️<span>Finder</span></div>
+                    <div class="app-card" data-app="Music">🎧<span>Music</span></div>
+                    <div class="app-card" data-app="Notes">📝<span>Notes</span></div>
+                </div>
+            </section>
+
+            <!-- AI Hub Tab -->
+            <section id="ai-view" class="tab-content">
+                <div class="ai-controls">
+                    <button class="ai-card siri" id="ai-siri">
+                        <div class="ai-glow"></div>
+                        <span class="ai-icon">🎙️</span>
+                        <span class="ai-name">Siri</span>
+                    </button>
+                    <button class="ai-card chatgpt" id="ai-chatgpt">
+                        <div class="ai-glow"></div>
+                        <span class="ai-icon">🪐</span>
+                        <span class="ai-name">ChatGPT</span>
+                    </button>
+                    <button class="ai-card gemini" id="ai-gemini">
+                        <div class="ai-glow"></div>
+                        <span class="ai-icon">✨</span>
+                        <span class="ai-name">Gemini</span>
+                    </button>
+                    <button class="ai-card claude" id="ai-claude">
+                        <div class="ai-glow"></div>
+                        <span class="ai-icon">🎭</span>
+                        <span class="ai-name">Claude</span>
+                    </button>
+                    <button class="ai-card ask" id="ai-ask">
+                        <div class="ai-glow"></div>
+                        <span class="ai-icon">💬</span>
+                        <span class="ai-name">Ask AI</span>
+                        <span class="ai-hint">Option + Space</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Controls Tab -->
+            <section id="controls-view" class="tab-content">
+                <div class="controls-grid">
+                    <div class="glass-panel control-card full-width">
+                        <h3>Display & Shortcuts</h3>
+                        <div class="btn-row">
+                            <button class="icon-btn" id="bright-down">🔅</button>
+                            <button class="icon-btn" id="bright-up">🔆</button>
+                            <button class="action-btn" id="key-spotlight">Spotlight</button>
+                            <button class="action-btn" id="key-tab">🔄 Tab</button>
+                        </div>
+                    </div>
+                    <div class="glass-panel control-card">
+                        <h3>Volume</h3>
+                        <div class="btn-row">
+                            <button class="icon-btn" id="vol-down">−</button>
+                            <button class="icon-btn" id="vol-mute">M</button>
+                            <button class="icon-btn" id="vol-up">+</button>
+                        </div>
+                    </div>
+                    <div class="glass-panel control-card">
+                        <h3>Playback</h3>
+                        <div class="btn-row">
+                            <button class="icon-btn" id="media-prev">⏮</button>
+                            <button class="icon-btn" id="media-play">⏯</button>
+                            <button class="icon-btn" id="media-next">⏭</button>
+                        </div>
+                    </div>
+                    <div class="glass-panel control-card full-width">
+                        <h3>System Power</h3>
+                        <div class="btn-row">
+                            <button class="action-btn" id="sys-lock">Lock</button>
+                            <button class="action-btn danger" id="sys-sleep">Sleep</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>LunaRemote Pro v3.0 • AI Powered</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
