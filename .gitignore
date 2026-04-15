@@ -1,19 +1,25 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-venv/
-.env
 
-# MacOS
+# OS-specific files
 .DS_Store
-.AppleDouble
-.LSOverride
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# IDE
-.vscode/
-.idea/
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# LunaRemote Temp
+# Project specifics
 *.log
-qr.png

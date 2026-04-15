@@ -1,0 +1,12 @@
+Current Issues:
+- Layout might be too "boxy".
+- Icons might be too generic.
+- Missing animations/transitions that feel "AI".
+- The user liked the "Everything in tabs" idea but didn't like the execution in the screenshot.
+- The screenshot showed tiny clusters of buttons.
+
+New Direction: "HUD-CORE"
+- Vision feed is always visible or integrated.
+- Buttons have neon circular borders (Iron Man style).
+- Background has a subtle grid or blueprint pattern.
+- Solid background but with DEPTH.
