@@ -1,0 +1,48 @@
+{
+  "name": "LunaRemote Pro",
+  "short_name": "LunaRemote",
+  "description": "Elite Mac remote control with haptic trackpad, AI Hub, and panic security suite.",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#020205",
+  "theme_color": "#00f2ff",
+  "categories": ["utilities", "productivity"],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Trackpad",
+      "short_name": "Track",
+      "description": "Open precision trackpad",
+      "url": "/#trackpad",
+      "icons": [{ "src": "/static/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Controls",
+      "short_name": "Control",
+      "description": "Open system controls",
+      "url": "/#controls",
+      "icons": [{ "src": "/static/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

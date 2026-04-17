@@ -1,7 +1,7 @@
 import os
 import socket
 import subprocess
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO, emit
 try:
     from pynput.mouse import Controller as MouseController, Button
@@ -34,6 +34,18 @@ def run_osascript(script):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_from_directory('static', 'manifest.json')
+
+@app.route('/sw.js')
+def serve_sw():
+    return send_from_directory('static', 'sw.js')
+
+@app.route('/download')
+def download_project():
+    return send_from_directory('.', 'LunaRemote_v3.1.zip', as_attachment=True)
 
 @socketio.on('mouse_move')
 def handle_mouse_move(data):
@@ -90,7 +102,8 @@ def handle_system(data):
     if action == 'sleep':
         run_osascript('tell application "System Events" to sleep')
     elif action == 'lock':
-        run_osascript('tell application "System Events" to keystroke "q" using {control down, command down}')
+        # More robust lock: sleep display (locks if 'require password' is set)
+        subprocess.run(["pmset", "displaysleepnow"])
 
 @socketio.on('keyboard')
 def handle_keyboard(data):
@@ -147,6 +160,13 @@ def handle_ai_command(data):
     elif cmd == 'ask_ai':
         subprocess.run(["open", "-a", "ChatGPT"])
         run_osascript('tell application "System Events" to key code 49 using {option down}')
+
+@socketio.on('panic')
+def handle_panic(data=None):
+    # Mute and Lock
+    run_osascript('set volume output muted true')
+    # More robust lock: sleep display immediately
+    subprocess.run(["pmset", "displaysleepnow"])
 
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

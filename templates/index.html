@@ -3,39 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LunaRemote Pro AI</title>
+    
+    <!-- PWA & Native Meta -->
+    <title>LunaRemote Pro</title>
+    <meta name="description" content="Elite Mac remote control with haptic trackpad, AI Hub, and panic security.">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#00f2ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LunaRemote">
+    <link rel="apple-touch-icon" href="/static/icon.png">
+    <link rel="apple-touch-startup-image" href="/static/icon-512.png">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body>
+    <!-- Native-Style Splash Screen -->
+    <div id="splash">
+        <div class="splash-logo">LUNA<span>PRO</span></div>
+        <div class="splash-tagline">Precision Remote Engine</div>
+        <div class="splash-ring"></div>
+    </div>
     <div id="app">
         <header>
             <div class="logo">LUNA<span>PRO</span></div>
-            <div class="status" id="connection-status">Connecting...</div>
+            <div class="status" id="connection-status" onclick="showConnectionModal()">Connecting...</div>
         </header>
 
-        <!-- Navigation Tabs -->
+        <!-- Web Connection Modal -->
+        <div id="conn-modal" class="glass-panel modal">
+            <div class="modal-content">
+                <h3>Remote Connection</h3>
+                <p>Enter your Mac's IP (e.g., 192.168.1.10)</p>
+                <input type="text" id="manual-ip" placeholder="http://192.168.1.X:5001">
+                <button class="glass-btn-clean" onclick="connectToMac()">Connect</button>
+                <button class="glass-btn-clean danger" onclick="hideConnectionModal()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Navigation -->
         <nav class="tabs-nav">
             <button class="tab-link active" data-tab="trackpad-view">Trackpad</button>
             <button class="tab-link" data-tab="apps-view">Launch</button>
             <button class="tab-link" data-tab="ai-view">AI Hub</button>
-            <button class="tab-link" data-tab="controls-view">Config</button>
+            <button class="tab-link" data-tab="controls-view">Control</button>
+            <button class="tab-link premium-nav" data-tab="premium-view">Premium</button>
         </nav>
 
         <main>
             <!-- Trackpad Tab -->
             <section id="trackpad-view" class="tab-content active">
-                <div id="trackpad" class="glass-panel">
-                    <div class="trackpad-label">PRO PRECISION</div>
+                <div id="trackpad" class="glass-panel main-trackpad">
+                    <div class="trackpad-label">PRECISE CONTROL</div>
                     <div class="trackpad-hint">2-Finger Scroll • Double Tap Click</div>
                 </div>
                 
-                <div class="pro-toolbar">
-                    <button class="pro-btn" id="pro-drag">Drag Mode</button>
-                    <button class="pro-btn" id="pro-rclick">Right Click</button>
-                    <div class="kb-compact">
-                        <input type="text" id="kb-input" placeholder="Type..." autocomplete="off">
-                        <button id="kb-backspace">⌫</button>
+                <div class="clean-toolbar">
+                    <button class="toolbar-btn glass-panel" id="pro-drag">Drag Mode</button>
+                    <button class="toolbar-btn glass-panel" id="pro-rclick">Right Click</button>
+                    <div class="kb-compact glass-panel">
+                        <input type="text" id="kb-input" placeholder="Type here..." autocomplete="off">
+                        <button id="kb-backspace" class="glass-btn">⌫</button>
                     </div>
                 </div>
             </section>
@@ -43,91 +72,159 @@
             <!-- Launchpad Tab -->
             <section id="apps-view" class="tab-content">
                 <div class="launchpad-grid">
-                    <div class="app-card" data-app="Google Chrome">🌐<span>Chrome</span></div>
-                    <div class="app-card" data-app="Spotify">🎵<span>Spotify</span></div>
-                    <div class="app-card" data-app="Terminal">📂<span>Terminal</span></div>
-                    <div class="app-card" data-app="Finder">🖥️<span>Finder</span></div>
-                    <div class="app-card" data-app="Music">🎧<span>Music</span></div>
-                    <div class="app-card" data-app="Notes">📝<span>Notes</span></div>
+                    <div class="app-card glass-panel" data-app="Google Chrome">🌐<span>Chrome</span></div>
+                    <div class="app-card glass-panel" data-app="Spotify">🎵<span>Spotify</span></div>
+                    <div class="app-card glass-panel" data-app="Terminal">📂<span>Terminal</span></div>
+                    <div class="app-card glass-panel" data-app="Finder">🖥️<span>Finder</span></div>
+                    <div class="app-card glass-panel" data-app="Notes">📝<span>Notes</span></div>
+                    <div class="app-card glass-panel pro-locked" data-app="Custom">➕<span>Custom</span></div>
                 </div>
             </section>
 
             <!-- AI Hub Tab -->
             <section id="ai-view" class="tab-content">
                 <div class="ai-controls">
-                    <button class="ai-card siri" id="ai-siri">
+                    <button class="ai-card siri glass-panel" id="ai-siri">
                         <div class="ai-glow"></div>
                         <span class="ai-icon">🎙️</span>
                         <span class="ai-name">Siri</span>
                     </button>
-                    <button class="ai-card chatgpt" id="ai-chatgpt">
+                    <button class="ai-card chatgpt glass-panel" id="ai-chatgpt">
                         <div class="ai-glow"></div>
                         <span class="ai-icon">🪐</span>
                         <span class="ai-name">ChatGPT</span>
                     </button>
-                    <button class="ai-card gemini" id="ai-gemini">
+                    <button class="ai-card gemini glass-panel" id="ai-gemini">
                         <div class="ai-glow"></div>
                         <span class="ai-icon">✨</span>
                         <span class="ai-name">Gemini</span>
                     </button>
-                    <button class="ai-card claude" id="ai-claude">
+                    <button class="ai-card claude glass-panel" id="ai-claude">
                         <div class="ai-glow"></div>
                         <span class="ai-icon">🎭</span>
                         <span class="ai-name">Claude</span>
                     </button>
-                    <button class="ai-card ask" id="ai-ask">
-                        <div class="ai-glow"></div>
-                        <span class="ai-icon">💬</span>
-                        <span class="ai-name">Ask AI</span>
-                        <span class="ai-hint">Option + Space</span>
-                    </button>
                 </div>
             </section>
 
-            <!-- Controls Tab -->
+            <!-- Control Tab (v4.4 CLEANED) -->
             <section id="controls-view" class="tab-content">
-                <div class="controls-grid">
-                    <div class="glass-panel control-card full-width">
-                        <h3>Display & Shortcuts</h3>
-                        <div class="btn-row">
-                            <button class="icon-btn" id="bright-down">🔅</button>
-                            <button class="icon-btn" id="bright-up">🔆</button>
-                            <button class="action-btn" id="key-spotlight">Spotlight</button>
-                            <button class="action-btn" id="key-tab">🔄 Tab</button>
+                <div class="clean-panic">
+                    <div class="panic-slider-track glass-panel" id="panic-slider">
+                        <div class="slider-text">SLIDE TO ACTIVATE PANIC</div>
+                        <div class="panic-handle" id="panic-handle"><span>🚨</span></div>
+                    </div>
+                </div>
+
+                <div class="clean-controls">
+                    <!-- Audio Control -->
+                    <div class="control-module glass-panel">
+                        <div class="module-header">AUDIO CONTROL</div>
+                        <div class="segmented-control">
+                            <button id="vol-down" class="seg-btn"><span>−</span></button>
+                            <button id="vol-mute" class="seg-btn"><span>Mute</span></button>
+                            <button id="vol-up" class="seg-btn"><span>+</span></button>
                         </div>
                     </div>
-                    <div class="glass-panel control-card">
-                        <h3>Volume</h3>
-                        <div class="btn-row">
-                            <button class="icon-btn" id="vol-down">−</button>
-                            <button class="icon-btn" id="vol-mute">M</button>
-                            <button class="icon-btn" id="vol-up">+</button>
+
+                    <!-- Media Control -->
+                    <div class="control-module glass-panel">
+                        <div class="module-header">SYSTEM PLAYBACK</div>
+                        <div class="segmented-control">
+                            <button id="media-prev" class="seg-btn"><span>⏮</span></button>
+                            <button id="media-play" class="seg-btn main"><span>⏯</span></button>
+                            <button id="media-next" class="seg-btn"><span>⏭</span></button>
                         </div>
                     </div>
-                    <div class="glass-panel control-card">
-                        <h3>Playback</h3>
-                        <div class="btn-row">
-                            <button class="icon-btn" id="media-prev">⏮</button>
-                            <button class="icon-btn" id="media-play">⏯</button>
-                            <button class="icon-btn" id="media-next">⏭</button>
+
+                    <!-- System Control -->
+                    <div class="control-module glass-panel">
+                        <div class="module-header">QUICK SHORTCUTS</div>
+                        <div class="dual-row">
+                            <button id="bright-down" class="glass-btn-clean">Dim 🔅</button>
+                            <button id="bright-up" class="glass-btn-clean">Bright 🔆</button>
+                        </div>
+                        <div class="dual-row">
+                            <button id="key-spotlight" class="glass-btn-clean">Spotlight</button>
+                            <button id="key-tab" class="glass-btn-clean">Switch App</button>
                         </div>
                     </div>
-                    <div class="glass-panel control-card full-width">
-                        <h3>System Power</h3>
-                        <div class="btn-row">
-                            <button class="action-btn" id="sys-lock">Lock</button>
-                            <button class="action-btn danger" id="sys-sleep">Sleep</button>
+
+                    <!-- Security Control -->
+                    <div class="control-module glass-panel danger-zone">
+                        <div class="module-header">PRIVACY TOOLS</div>
+                        <div class="dual-row">
+                            <button id="sys-lock" class="glass-btn-clean">Lock Now</button>
+                            <button id="sys-sleep" class="glass-btn-clean danger">Force Sleep</button>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium Tab (Reverted to Previous Style) -->
+            <section id="premium-view" class="tab-content">
+                <div class="premium-hub">
+                    <div class="premium-hero glass-panel">
+                        <div class="pro-badge">GOLD TIER</div>
+                        <h2>Upgrade to Full Access</h2>
+                        <p>Unlock the professional utility suite.</p>
+                        
+                        <div class="pricing-cards">
+                            <div class="price-card active glass-panel">
+                                <span class="duration">Current</span>
+                                <span class="price">$0</span>
+                                <span class="tier-name">Free Lite</span>
+                            </div>
+                            <div class="price-card pro glass-panel">
+                                <span class="duration">Monthly</span>
+                                <span class="price">$4.99</span>
+                                <span class="tier-name">Pro Tier</span>
+                                <div class="soon-badge">Soon</div>
+                            </div>
+                        </div>
+
+                        <div class="pro-features-grid">
+                            <div class="feature-item"><span>🚀</span> Unlimited AI</div>
+                            <div class="feature-item"><span>🎥</span> Screen Stream</div>
+                            <div class="feature-item"><span>⌨️</span> Custom Macros</div>
+                            <div class="feature-item"><span>🎨</span> Premium Themes</div>
+                        </div>
+
                     </div>
                 </div>
             </section>
         </main>
         
         <footer>
-            <p>LunaRemote Pro v3.0 • AI Powered</p>
+            <p>LunaRemote Pro v4.4 • Clean Interface Verified</p>
         </footer>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Register upgraded service worker v4.5
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/sw.js').then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New version available
+                            if (confirm('LunaRemote updated! Reload for the latest version?')) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+            });
+        }
+        // Splash screen fade-out
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                if (splash) { splash.classList.add('hidden'); setTimeout(() => splash.remove(), 600); }
+            }, 1800);
+        });
+    </script>
 </body>
 </html>
