@@ -5,15 +5,56 @@ if (currentTarget.includes('vercel.app') || currentTarget.includes('github.io'))
 }
 const socket = io(currentTarget);
 
-function showConnectionModal() { document.getElementById('conn-modal').classList.add('active'); }
-function hideConnectionModal() { document.getElementById('conn-modal').classList.remove('active'); }
-function connectToMac() {
-    const ip = document.getElementById('manual-ip').value;
-    if (ip) {
-        localStorage.setItem('last_ip', ip);
-        window.location.reload();
+// ── Auth Logic v5.0 ──
+let pinInput = "";
+const authOverlay = document.getElementById('auth-overlay');
+const dots = document.querySelectorAll('#pin-dots .dot');
+
+function updateDots() {
+    dots.forEach((dot, i) => dot.classList.toggle('filled', i < pinInput.length));
+}
+
+function keyPress(key) {
+    if (key === 'DEL') {
+        pinInput = pinInput.slice(0, -1);
+    } else if (pinInput.length < 6) {
+        pinInput += key;
+    }
+    updateDots();
+    triggerHaptic('light');
+
+    if (pinInput.length === 6) {
+        socket.emit('auth', { pin: pinInput });
     }
 }
+
+socket.on('connect', () => {
+    const savedPin = localStorage.getItem('luna_pin');
+    if (savedPin) socket.emit('auth', { pin: savedPin });
+    else authOverlay.classList.remove('hidden');
+});
+
+socket.on('auth_success', () => {
+    localStorage.setItem('luna_pin', pinInput || localStorage.getItem('luna_pin'));
+    authOverlay.classList.add('hidden');
+    triggerHaptic('medium');
+    status.innerText = "Connected • Secure";
+});
+
+socket.on('auth_fail', () => {
+    const content = document.querySelector('.auth-content');
+    content.classList.add('shake');
+    triggerHaptic('heavy');
+    setTimeout(() => {
+        content.classList.remove('shake');
+        pinInput = "";
+        updateDots();
+    }, 400);
+});
+
+socket.on('auth_required', () => {
+    authOverlay.classList.remove('hidden');
+});
 
 const trackpad = document.getElementById('trackpad');
 const status = document.getElementById('connection-status');
