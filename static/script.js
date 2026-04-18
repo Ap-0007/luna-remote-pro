@@ -38,13 +38,17 @@ socket.on('auth_success', () => {
     localStorage.setItem('luna_pin', pinInput || localStorage.getItem('luna_pin'));
     authOverlay.classList.add('hidden');
     triggerHaptic('medium');
-    status.innerText = "Connected • Secure";
+    document.getElementById('auth-state').innerText = "🔓";
+    document.getElementById('auth-state').classList.add('secure');
+    status.innerText = "Secure Connection";
 });
 
 socket.on('auth_fail', () => {
     const content = document.querySelector('.auth-content');
     content.classList.add('shake');
     triggerHaptic('heavy');
+    document.getElementById('auth-state').innerText = "🔒";
+    document.getElementById('auth-state').classList.remove('secure');
     setTimeout(() => {
         content.classList.remove('shake');
         pinInput = "";
@@ -54,6 +58,7 @@ socket.on('auth_fail', () => {
 
 socket.on('auth_required', () => {
     authOverlay.classList.remove('hidden');
+    document.getElementById('auth-state').innerText = "🔒";
 });
 
 const trackpad = document.getElementById('trackpad');
