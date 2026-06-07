@@ -1,78 +1,36 @@
-# 🌙 LunaRemote Pro v3.0
+# Luna Remote Pro
 
-> Control your laptop with the power of AI from your phone.
+Luna Remote Pro — a project by vanta.nox.
 
-**LunaRemote Pro** is a high-end, mobile-optimized remote control for your Mac. It transforms your phone's browser into a professional-grade touchpad, application launcher, and AI control hub.
+![Language](https://img.shields.io/badge/language-HTML-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![GitHub](https://img.shields.io/github/stars/Ap-0007/luna-remote-pro?style=social)
 
----
+## 📖 About
 
-## 🚀 Features
+This repository contains the source code for **Luna Remote Pro**.
 
-- **🦾 Pro Touchpad Gestures**:
-  - Precision relative movement.
-  - **Double-Tap** to Double Click.
-  - **Long Press** for Right Click.
-  - **Drag & Drop Mode**: Toggle "Grab" to move windows/files.
-  - **Two-Finger Scroll**: Natural scrolling through documents and web pages.
+## 🛠️ Tech Stack
 
-- **🤖 AI Force Hub**:
-  - One-tap access to **ChatGPT**, **Siri**, **Gemini**, and **Claude**.
-  - **"Ask AI" Button**: Triggers global shortcuts for instant prompting.
+- **Primary Language:** HTML
 
-- **📂 App Launchpad**:
-  - Instant launch buttons for **Chrome**, **Spotify**, **Finder**, **Music**, and **Terminal**.
+## 🚀 Getting Started
 
-- **⚙️ Complete OS Controls**:
-  - Media Playback (Play/Pause, Next/Prev).
-  - Volume Up/Down/Mute.
-  - Screen Brightness.
-  - System Sleep & Screen Lock.
-  - Remote Keyboard Input.
+```bash
+# Clone the repository
+git clone https://github.com/Ap-0007/luna-remote-pro.git
+cd luna-remote-pro
+```
 
-- **✨ Premium UI**:
-  - Dark Mode Glassmorphism.
-  - Glowing AI Themes.
-  - Responsive Tabbed Navigation.
+Open `index.html` in your browser to get started.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!  
+Feel free to open an [issue](https://github.com/Ap-0007/luna-remote-pro/issues) or submit a pull request.
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🛠️ Setup & Installation
-
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/LunaRemote.git
-    cd LunaRemote
-    ```
-
-2.  **Install Dependencies**:
-    ```bash
-    pip install flask flask-socketio eventlet pynput qrcode pillow
-    ```
-
-3.  **Run the Server**:
-    ```bash
-    python server.py
-    ```
-
-4.  **Connect Your Phone**:
-    Scan the **QR Code** that appears in your terminal or type the displayed IP address into your mobile browser.
-
----
-
-## 🔒 Permissions (macOS)
-
-For the gestures and app-launcher to work, you **must** grant the following permissions in **System Settings > Privacy & Security**:
-1.  **Accessibility**: Grant to `Terminal.app` (or your preferred IDE).
-2.  **Screen Recording**: Grant to `Terminal.app`.
-
----
-
-## 📦 Tech Stack
-
-- **Backend**: Python (Flask, Socket.IO, pynput, osascript)
-- **Frontend**: HTML5, Vanilla CSS3, JavaScript (Socket.IO-client)
-- **Networking**: Real-time WebSockets.
-
----
-
-*Built with ❤️ and Precision Control.*
+**Built by [vanta.nox](https://github.com/Ap-0007)**
